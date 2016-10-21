@@ -131,6 +131,9 @@ public:
     if (json_object_object_get_ex (jobj, "tick", &jobj))
       {
 	json_object *bid, *ask, *instrument, *ttime;
+
+	std::cout << "*" << std::endl;
+	
 	if (json_object_object_get_ex (jobj, "bid", &bid) &&
 	    json_object_object_get_ex (jobj, "ask", &ask) &&
 	    json_object_object_get_ex (jobj, "instrument", &instrument) &&
@@ -139,6 +142,8 @@ public:
 	    string instrument_s = json_object_get_string (instrument);
 	    string timestamp_s = json_object_get_string (ttime);
 
+	    std::cout << "-" << std::endl;
+	
 	    timestamp_s[10] = ' ';
 	    timestamp_s[19] = 0;
 	    boost::posix_time::ptime
