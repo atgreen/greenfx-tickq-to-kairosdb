@@ -158,6 +158,7 @@ public:
 		     instrument_s.c_str(),
 		     diff.total_seconds (),
 		     json_object_get_string (bid));
+	    std::cout << ">" << std::endl;
 	    std::cout << buf << std::endl;
 	    boost::system::error_code ignored_error;
 	    boost::asio::write (*socket,
