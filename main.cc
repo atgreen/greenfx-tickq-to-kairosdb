@@ -77,7 +77,7 @@ public:
 	{
 	  socket = new boost::asio::ip::tcp::socket(ios);
 	  boost::asio::ip::tcp::resolver res (ios);
-	  boost::asio::ip::tcp::resolver::query query ("kairosdb", "4242");
+	  boost::asio::ip::tcp::resolver::query query ("greenfx-kairosdb", "4242");
 	  boost::asio::connect (*socket, res.resolve (query));
 	  connected = true;
 	}
