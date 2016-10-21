@@ -1,6 +1,6 @@
 Name:		greenfx-tickq-to-kairosdb
 Version:	1.0
-Release:        1
+Release:        0.1
 Summary:	Collect and publish ticks from Oanda
 
 Group:	        Applications
