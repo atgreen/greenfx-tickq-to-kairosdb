@@ -126,6 +126,7 @@ public:
     json_object *tick;
 
     std::cout << "." << std::endl;
+    std::cout << msg << std::endl;
     
     if (json_object_object_get_ex (jobj, "tick", &jobj))
       {
