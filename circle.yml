@@ -1,0 +1,11 @@
+machine:
+  services:
+    - docker
+
+checkout:
+
+dependencies:
+  override:
+    - docker build -f Dockerfile.builder -t atgreen/greenfx-tickq-to-kairosdb-builder .
+    - docker run -t -v `pwd`:/opt atgreen/greenfx-tickq-to-kairosdb-builder
+    - docker build -f Dockerfile -t atgreen/greenfx-tickq-to-kairosdb .
