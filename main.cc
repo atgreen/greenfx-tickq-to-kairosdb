@@ -126,7 +126,7 @@ public:
     json_object *tick;
 
     std::cout << "." << std::endl;
-    std::cout << msg << std::endl;
+    std::cout << dynamic_cast<const TextMessage*>(msg)->getText() << std::endl;
     
     if (json_object_object_get_ex (jobj, "tick", &jobj))
       {
