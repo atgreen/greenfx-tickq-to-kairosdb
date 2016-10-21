@@ -125,6 +125,8 @@ public:
     json_object *jobj = json_tokener_parse (dynamic_cast<const TextMessage*>(msg)->getText().c_str());
     json_object *tick;
 
+    std::cout << "." << std::endl;
+    
     if (json_object_object_get_ex (jobj, "tick", &jobj))
       {
 	json_object *bid, *ask, *instrument, *ttime;
@@ -146,7 +148,7 @@ public:
 	    
 	    // Record the tick in kairosdb
 	    char buf[1024];
-	    sprintf (buf, "put %s.bid %u %s host=A",
+	    sprintf (buf, "put %s.bid %u %s\n",
 		     instrument_s.c_str(),
 		     diff.total_seconds (),
 		     json_object_get_string (bid));
