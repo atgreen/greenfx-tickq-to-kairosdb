@@ -5,7 +5,7 @@ MAINTAINER anthony@atgreen.org
 RUN rpm -ivh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-8.noarch.rpm && \
     yum -y install \
       rpm-build gcc-c++ gcc make patch \
-      libcurl-devel activemq-cpp-devel json-c-devel \
+      libcurl-devel activemq-cpp-devel json-c-devel boost-devel \
       autoconf automake && \
     mkdir -p /root/rpmbuild/SOURCES
 
