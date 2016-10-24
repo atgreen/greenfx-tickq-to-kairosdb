@@ -146,26 +146,37 @@ public:
 	
 	    timestamp_s[10] = ' ';
 	    timestamp_s[19] = 0;
-	    boost::posix_time::ptime
-	      t(boost::posix_time::time_from_string(timestamp_s));
-	    boost::posix_time::ptime
-	      epoch(boost::gregorian::date(1970,1,1));
-	    boost::posix_time::time_duration diff = t - epoch;
-	    
-	    std::cout << "!" << std::endl;
 
-	    // Record the tick in kairosdb
-	    char buf[1024];
-	    sprintf (buf, "put %s.bid %u %s\n",
-		     instrument_s.c_str(),
-		     diff.total_seconds (),
-		     json_object_get_string (bid));
-	    std::cout << ">" << std::endl;
-	    std::cout << buf << std::endl;
-	    boost::system::error_code ignored_error;
-	    boost::asio::write (*socket,
-				boost::asio::buffer (buf),
-				boost::asio::transfer_all(), ignored_error);
+	    try
+	      {
+		std::cout << "About to parse " << timestamp_s << std::endl;
+		boost::posix_time::ptime
+		  t(boost::posix_time::time_from_string(timestamp_s));
+		boost::posix_time::ptime
+		  epoch(boost::gregorian::date(1970,1,1));
+
+		boost::posix_time::time_duration diff = t - epoch;
+	    
+		std::cout << "!" << std::endl;
+		
+		// Record the tick in kairosdb
+		char buf[1024];
+		sprintf (buf, "put %s.bid %u %s\n",
+			 instrument_s.c_str(),
+			 diff.total_seconds (),
+			 json_object_get_string (bid));
+		std::cout << ">" << std::endl;
+		std::cout << buf << std::endl;
+		boost::system::error_code ignored_error;
+		boost::asio::write (*socket,
+				    boost::asio::buffer (buf),
+				    boost::asio::transfer_all(), ignored_error);
+	      }
+	    catch (boost::system::system_error const& e)
+	      {
+		std::cerr << "ERROR PARSING " << timestamp_s << std::endl;
+		std::cerr << e.what() << std::endl;
+	      }
 	    
 	    json_object_put (bid);
 	    json_object_put (ask);
