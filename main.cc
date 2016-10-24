@@ -125,15 +125,10 @@ public:
     json_object *jobj = json_tokener_parse (dynamic_cast<const TextMessage*>(msg)->getText().c_str());
     json_object *tick;
 
-    std::cout << "." << std::endl;
-    std::cout << "?" << dynamic_cast<const TextMessage*>(msg)->getText() << std::endl;
-    
     if (json_object_object_get_ex (jobj, "tick", &jobj))
       {
 	json_object *bid, *ask, *instrument, *ttime;
 
-	std::cout << "*" << std::endl;
-	
 	if (json_object_object_get_ex (jobj, "bid", &bid) &&
 	    json_object_object_get_ex (jobj, "ask", &ask) &&
 	    json_object_object_get_ex (jobj, "instrument", &instrument) &&
@@ -142,13 +137,8 @@ public:
 	    string instrument_s = json_object_get_string (instrument);
 	    string timestamp_s = json_object_get_string (ttime);
 
-	    std::cout << "-" << std::endl;
-	
 	    timestamp_s[10] = ' ';
-
-	    string subtimestamp_s = timestamp_s.substr(0,18);
-
-	    timestamp_s[19] = (char) 0;
+	    string subtimestamp_s = timestamp_s.substr(0,20);
 
 	    try
 	      {
@@ -160,17 +150,22 @@ public:
 
 		boost::posix_time::time_duration diff = t - epoch;
 	    
-		std::cout << "!" << std::endl;
-		
 		// Record the tick in kairosdb
 		char buf[1024];
+		boost::system::error_code ignored_error;
+
 		sprintf (buf, "put %s.bid %u %s\n",
 			 instrument_s.c_str(),
 			 diff.total_seconds (),
 			 json_object_get_string (bid));
-		std::cout << ">" << std::endl;
-		std::cout << buf << std::endl;
-		boost::system::error_code ignored_error;
+		boost::asio::write (*socket,
+				    boost::asio::buffer (buf),
+				    boost::asio::transfer_all(), ignored_error);
+
+		sprintf (buf, "put %s.ask %u %s\n",
+			 instrument_s.c_str(),
+			 diff.total_seconds (),
+			 json_object_get_string (ask));
 		boost::asio::write (*socket,
 				    boost::asio::buffer (buf),
 				    boost::asio::transfer_all(), ignored_error);
