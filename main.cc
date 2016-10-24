@@ -145,13 +145,16 @@ public:
 	    std::cout << "-" << std::endl;
 	
 	    timestamp_s[10] = ' ';
-	    timestamp_s[19] = 0;
+
+	    string subtimestamp_s = timestamp_s.substr(0,18);
+
+	    timestamp_s[19] = (char) 0;
 
 	    try
 	      {
-		std::cout << "About to parse " << timestamp_s << std::endl;
+		std::cout << "About to parse " << subtimestamp_s << std::endl;
 		boost::posix_time::ptime
-		  t(boost::posix_time::time_from_string(timestamp_s));
+		  t(boost::posix_time::time_from_string(subtimestamp_s));
 		boost::posix_time::ptime
 		  epoch(boost::gregorian::date(1970,1,1));
 
@@ -174,7 +177,7 @@ public:
 	      }
 	    catch (boost::system::system_error const& e)
 	      {
-		std::cerr << "ERROR PARSING " << timestamp_s << std::endl;
+		std::cerr << "ERROR PARSING " << subtimestamp_s << std::endl;
 		std::cerr << e.what() << std::endl;
 	      }
 	    
