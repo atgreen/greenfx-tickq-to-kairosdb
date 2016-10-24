@@ -126,7 +126,7 @@ public:
     json_object *tick;
 
     std::cout << "." << std::endl;
-    std::cout << dynamic_cast<const TextMessage*>(msg)->getText() << std::endl;
+    std::cout << "?" << dynamic_cast<const TextMessage*>(msg)->getText() << std::endl;
     
     if (json_object_object_get_ex (jobj, "tick", &jobj))
       {
@@ -152,6 +152,8 @@ public:
 	      epoch(boost::gregorian::date(1970,1,1));
 	    boost::posix_time::time_duration diff = t - epoch;
 	    
+	    std::cout << "!" << std::endl;
+
 	    // Record the tick in kairosdb
 	    char buf[1024];
 	    sprintf (buf, "put %s.bid %u %s\n",
