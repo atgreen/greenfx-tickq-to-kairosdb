@@ -125,14 +125,14 @@ public:
     json_object *jobj = json_tokener_parse (dynamic_cast<const TextMessage*>(msg)->getText().c_str());
     json_object *tick;
 
-    if (json_object_object_get_ex (jobj, "tick", &jobj))
+    if (json_object_object_get_ex (jobj, "tick", &tick))
       {
 	json_object *bid, *ask, *instrument, *ttime;
 
-	if (json_object_object_get_ex (jobj, "bid", &bid) &&
-	    json_object_object_get_ex (jobj, "ask", &ask) &&
-	    json_object_object_get_ex (jobj, "instrument", &instrument) &&
-	    json_object_object_get_ex (jobj, "time", &ttime))
+	if (json_object_object_get_ex (tick, "bid", &bid) &&
+	    json_object_object_get_ex (tick, "ask", &ask) &&
+	    json_object_object_get_ex (tick, "instrument", &instrument) &&
+	    json_object_object_get_ex (tick, "time", &ttime))
 	  {
 	    string instrument_s = json_object_get_string (instrument);
 	    string timestamp_s = json_object_get_string (ttime);
@@ -207,8 +207,8 @@ int main()
   boost::posix_time::ptime t(boost::posix_time::time_from_string(ts));
   std::cout << t << std::endl;
 
+  std::cout << GFX_VERSION_STR "  [git commit " GFX_GIT_COMMIT_HASH "]\nCopyright (C) 2014, 2016  Anthony Green\n" << std::endl;
 
-  std::cout << "tickq-to-kairosdb, Copyright (C) 2016  Anthony Green" << std::endl;
   std::cout << "Program started by User " << getuid() << std::endl;
 
   activemq::library::ActiveMQCPP::initializeLibrary();
